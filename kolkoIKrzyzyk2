@@ -1,0 +1,115 @@
+#!/usr/bin/bash
+
+echo "Wybierz gracza X/O"
+GRACZ=' '
+read GRACZ
+
+if [ $GRACZ == "X" ]
+then
+	echo "Zaczyna gracz X"
+elif [ $GRACZ == "O" ]
+then
+	echo "Zaczyna gracz 0"
+else
+	echo "Zly wybor gracza zaczyna X"
+	GRACZ="X"
+fi
+
+echo $GRACZ
+declare -A PLANSZA
+num_rows=3
+num_columns=3
+
+for ((i=1;i<=num_rows;i++)) do
+    for ((j=1;j<=num_columns;j++)) do
+        PLANSZA[$i,$j]="-"
+    done
+done
+
+
+
+KONTROLER=0
+RUCH=0
+while [ $KONTROLER -eq 0 ]
+do
+	WIERSZE=0
+	KOLUMNY=0
+	echo "Podaj Kolumny (1-3)"
+	read KOLUMNY
+	echo "Podaj Wiersze (1-3)"
+	read WIERSZE
+	if ((KOLUMNY <= 3 && KOLUMNY >=1 && WIERSZE <= 3 && WIERSZE >=1))
+	then
+		if [ "${PLANSZA[$WIERSZE,$KOLUMNY]}" != "-"  ]
+		then
+			echo "Pole juz wypelnione"
+			continue
+		fi
+		RUCH=$((RUCH+1))
+		PLANSZA[$WIERSZE,$KOLUMNY]=$GRACZ
+		for ((i=1;i<=num_columns;i++)) do
+                     for ((j=1;j<=num_rows;j++)) do
+                            printf "%s" ${PLANSZA[$i,$j]}
+                     done
+                printf "\n"
+                done
+		if [ "${PLANSZA[1,1]}" == "$GRACZ" ] && [ "${PLANSZA[1,2]}" == "$GRACZ" ] && [ "${PLANSZA[1,3]}" == "$GRACZ" ]
+                then
+                        echo "Wygral gracz " $GRACZ
+			KONTROLER=1
+		fi
+		if [ "${PLANSZA[2,1]}" == "$GRACZ" ] && [ "${PLANSZA[2,2]}" == "$GRACZ" ] && [ "${PLANSZA[2,3]}" == "$GRACZ" ]
+                then
+                        echo "Wygral gracz " $GRACZ
+                        KONTROLER=1
+                fi
+		if [ "${PLANSZA[3,1]}" == "$GRACZ" ] && [ "${PLANSZA[3,2]}" == "$GRACZ" ] && [ "${PLANSZA[3,3]}" == "$GRACZ" ]
+                then
+                        echo "Wygral gracz " $GRACZ
+                        KONTROLER=1
+                fi
+		if [ "${PLANSZA[1,1]}" == "$GRACZ" ] && [ "${PLANSZA[2,1]}" == "$GRACZ" ] && [ "${PLANSZA[3,1]}" == "$GRACZ" ]
+                then
+                        echo "Wygral gracz " $GRACZ
+                        KONTROLER=1
+                fi
+		if [ "${PLANSZA[1,2]}" == "$GRACZ" ] && [ "${PLANSZA[2,2]}" == "$GRACZ" ] && [ "${PLANSZA[3,2]}" == "$GRACZ" ]
+                then
+                        echo "Wygral gracz " $GRACZ
+                        KONTROLER=1
+                fi
+		if [ "${PLANSZA[1,3]}" == "$GRACZ" ] && [ "${PLANSZA[2,3]}" == "$GRACZ" ] && [ "${PLANSZA[3,3]}" == "$GRACZ" ]
+                then
+                        echo "Wygral gracz " $GRACZ
+                        KONTROLER=1
+                fi
+		if [ "${PLANSZA[1,1]}" == "$GRACZ" ] && [ "${PLANSZA[2,2]}" == "$GRACZ" ] && [ "${PLANSZA[3,3]}" == "$GRACZ" ]
+                then
+                        echo "Wygral gracz " $GRACZ
+                        KONTROLER=1
+                fi
+		if [ "${PLANSZA[3,1]}" == "$GRACZ" ] && [ "${PLANSZA[2,2]}" == "$GRACZ" ] && [ "${PLANSZA[1,3]}" == "$GRACZ" ]
+                then
+                        echo "Wygral gracz " $GRACZ
+                        KONTROLER=1
+                fi
+		if [ $RUCH -ge 9 ]
+		then
+			KONTROLER=1
+			echo "Remis"
+		fi
+		if [ $GRACZ = "O" ]
+                then
+                        GRACZ="X"
+                else
+                        GRACZ="O"
+                fi
+	else
+		echo "Zle pole"
+		continue
+	fi
+done
+	
+
+
+
